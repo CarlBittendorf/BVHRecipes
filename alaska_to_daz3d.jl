@@ -5,7 +5,7 @@ print("Enter the name of the alaska file that should be transformed: ")
 gname = readline()
 print("Enter the name of a DAZ3D file: ")
 dname = readline()
-print("Enter the name for the resulting file: ")
+print("Enter a name for the resulting BVH file: ")
 rname = readline()
 
 # load file, remove unnecessary joints and optimize offsets and rotations
@@ -20,6 +20,8 @@ g = load(gname) |>
     remove_joints!("J_C4", "J_C3", "J_C2", "J_C1", "J_Atlas") |>
     optimize_offsets! |>
     optimize_rotations!(ADAM, 0.005, 100, [1, 2, 3, 4, 6, 8, 9, 10, 12, 14])
+
+println(total_squared_errors(g))
 
 
 dict = Dict(  
