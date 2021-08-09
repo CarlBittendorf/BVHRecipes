@@ -1,8 +1,15 @@
 using BVHFiles, Flux # load packages
 
 
+print("Enter the name of the alaska file that should be transformed: ")
+gname = readline()
+print("Enter the name of a DAZ3D file: ")
+dname = readline()
+print("Enter the name for the resulting file: ")
+rname = readline()
+
 # load file, remove unnecessary joints and optimize offsets and rotations
-g = load("Example.bvh") |>
+g = load(gname) |>
     global_positions! |>
     remove_joint!(7) |>
     remove_joint!(13) |>
@@ -57,15 +64,15 @@ exclude = [find(g, "lCollar"), find(g, "rCollar"), find(g, "lThighBend"), find(g
 T = [-1.0 0.0 0.0; 0.0 0.0 1.0; 0.0 1.0 0.0]
 
 # replace the offsets of the Alaska hierarchy and multiply them by 7
-replace_offsets!(g, load("DAZ3D.bvh"), exclude, T) |>
+replace_offsets!(g, load(dname), exclude, T) |>
 change_sequences!(:ZXY) |>
 scale!(7.0)
 
 # load a DAZ3D hierarchy, add the necessary frames and transfer the rotations from Alaska to DAZ3D
-d = load("DAZ3D.bvh") |>
+d = load(dname) |>
     zero! |>
-    add_frames!(240) |>
+    add_frames!(frames(g) - frames(load(dname))) |>
     project!(g, T)
 
 # save the DAZ3D hierarchy to a file
-save(d, "Result.bvh")
+save(d, rname)
