@@ -19,13 +19,14 @@ function determine_number(v::Integer)
 
     if nameᵥ |> endswith("End Site")
         nameᵥ₋₁ = name(g, inneighbors(g, v)[1])
+
         nameᵥ₋₁ |> endswith("lEar") && return 2
         nameᵥ₋₁ |> endswith("rEar") && return 3
         nameᵥ₋₁ |> endswith("lMetatarsals") && return 19
         nameᵥ₋₁ |> endswith("rMetatarsals") && return 21
     end
 
-    nameᵥ |> endswith("neckUpper") && return 1
+    nameᵥ |> endswith("head") && return 1
     nameᵥ |> endswith("lShldrBend") && return 4
     nameᵥ |> endswith("neckLower") && return 5
     nameᵥ |> endswith("rShldrBend") && return 6
