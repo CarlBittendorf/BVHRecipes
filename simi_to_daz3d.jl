@@ -127,6 +127,7 @@ replace_offsets!(g, load(dname), exclude)
 
 # load a DAZ3D hierarchy, add the necessary frames and transfer the rotations from Simi to DAZ3D
 d = load(dname) |>
+    zero! |>
     add_frames!(frames(g) - frames(load(dname))) |>
     project!(g)
 
